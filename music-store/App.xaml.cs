@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace music_store
 {
@@ -13,5 +7,6 @@ namespace music_store
     /// </summary>
     public partial class App : Application
     {
+        LoginWindow loginWindow = new LoginWindow(400, 300);
     }
 }

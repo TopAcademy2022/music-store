@@ -10,19 +10,31 @@ namespace LoginService.Services
     {
         private DatabaseContext.DatabaseContext _databaseContext;
 
+        private bool CompareUsers(User source, User searched)
+        {
+            if (source.Id == searched.Id &&
+                source.Login == searched.Login &&
+                source.Password == searched.Password)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private bool ContainsUser(IEnumerable<User> collection, User searchedUser)
         {
             foreach(User user in collection)
             {
-                if (user.Id == searchedUser.Id &&
-                    user.Login == searchedUser.Login &&
-                    user.Password == searchedUser.Password)
-                {
-                    return true;
-                }
+                this.CompareUsers(user, searchedUser);
             }
 
             return false;
+        }
+
+        public UserService()
+        {
+            this._databaseContext = new DatabaseContext.DatabaseContext();
         }
 
         public UserService(DatabaseContext.DatabaseContext databaseContext)
@@ -65,6 +77,16 @@ namespace LoginService.Services
         public IEnumerable<User> GetAllUsersByLogin(string? login)
         {
             return this._databaseContext.Set<User>().Where(user => user.Login == login).ToList();
+        }
+
+        public bool GetUserExist(User userExist)
+        {
+            if (this.GetAllUsers().Where(user => this.CompareUsers(user, userExist)).Count() > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

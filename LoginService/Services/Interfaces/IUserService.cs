@@ -12,5 +12,7 @@ namespace LoginService.Services.Interfaces
         public IEnumerable<User> GetAllUsers();
 
         public IEnumerable<User> GetAllUsersByLogin(string? login);
+
+        public bool GetUserExist(User userExist);
     }
 }
