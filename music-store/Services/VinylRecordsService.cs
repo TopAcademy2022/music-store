@@ -8,28 +8,28 @@ namespace music_store.Services
 	{
 		private ADatabaseConnection _dbConnection; //!< Database connection
 
-		public VinylRecordsService()
+		public VinylRecordsService(SqliteConnection dbConnection)
 		{
-			this._dbConnection = new SqliteConnection();
+			this._dbConnection = dbConnection;
 		}
 
 		/*!
 		* @brief Adding plates to our database.
 		* @param[in] vinylRecord class instance to add.
-		* @return True - vinylRecord  added; False - vinylRecord not added.
+		* @return True - Vinyl Record added; False - vinylRecord not added.
 		*/
 		public bool AddVinilRecord(VinylRecord vinylRecord)
 		{
 			try
 			{
 				this._dbConnection.VinylRecords.Add(vinylRecord); //!< Adding a change to our data
-				this._dbConnection.SaveChanges(); //!< Save changes to our data
+				this._dbConnection.SaveChanges();
 
 				return true;
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message); //!< Exception output
+				Console.WriteLine(ex.Message);
 			}
 
 			return false;
