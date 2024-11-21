@@ -17,7 +17,7 @@ namespace music_store.Services
 		{
 			try
 			{
-				this._dbConnection.VinylRecords.Add(vinylRecord); //!< Adding a change to our data
+				this._dbConnection.VinylRecords.Add(vinylRecord);
 				this._dbConnection.SaveChanges();
 
 				return true;
