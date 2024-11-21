@@ -17,6 +17,8 @@ namespace music_store.Services.Interfaces
 
 		public DbSet<MusicGenre> MusicGenres => Set<MusicGenre>();
 
+		public DbSet<User> Users => Set<User>();
+
 		public ADatabaseConnection()
 		{
 			this.ConnectionString = this.ReturnConnectionString();
