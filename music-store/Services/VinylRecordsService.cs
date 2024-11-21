@@ -8,16 +8,11 @@ namespace music_store.Services
 	{
 		private ADatabaseConnection _dbConnection; //!< Database connection
 
-		public VinylRecordsService(SqliteConnection dbConnection)
+		public VinylRecordsService(ADatabaseConnection dbConnection)
 		{
 			this._dbConnection = dbConnection;
 		}
 
-		/*!
-		* @brief Adding plates to our database.
-		* @param[in] vinylRecord class instance to add.
-		* @return True - Vinyl Record added; False - vinylRecord not added.
-		*/
 		public bool AddVinilRecord(VinylRecord vinylRecord)
 		{
 			try
