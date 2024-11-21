@@ -4,22 +4,23 @@ using music_store.Services.Interfaces;
 
 namespace music_store.Services
 {
-	/**
+	/*!
 	 * @class ServiceMusicBand
 	 * @brief Class for working with music bands.
 	 */
-	public class ServiceMusicBand
+	public class MusicBandService
 	{
-		/**
+		/*!
 		 * @brief Method to add a music band.
-		 * @param musicBand The music band object.
-		 * @return True if the addition was successful;False otherwise .
+		 * @param[in] musicBand - The music band object.
+		 * @return True - if the addition was successful; False - otherwise .
 		 */
+		private ADatabaseConnection db = new SqliteConnection();
+
 		public bool AddMusicBand(MusicBand musicBand)
 		{
 			try
 			{
-				ADatabaseConnection db = new SqliteConnection();
 				db.MusicBands.Add(musicBand);
 				db.SaveChanges();
 
