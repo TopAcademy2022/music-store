@@ -15,14 +15,19 @@ namespace music_store.Services
 		 * @param[in] musicBand - The music band object.
 		 * @return True - if the addition was successful; False - otherwise .
 		 */
-		private ADatabaseConnection db = new SqliteConnection();
+		private readonly ADatabaseConnection _db;
 
-		public bool AddMusicBand(MusicBand musicBand)
+        public MusicBandService(ADatabaseConnection db)
+        {
+            _db = db;
+        }
+
+        public bool AddMusicBand(MusicBand musicBand)
 		{
 			try
 			{
-				db.MusicBands.Add(musicBand);
-				db.SaveChanges();
+				_db.MusicBands.Add(musicBand);
+				_db.SaveChanges();
 
 				return true;
 			}
