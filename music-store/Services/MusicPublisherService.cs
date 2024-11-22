@@ -1,15 +1,13 @@
-﻿using music_store.Models.Entities;
-using music_store.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using music_store.Models.Entities;
+using music_store.Services.Interfaces;
 
 namespace music_store.Services
 {
-    /*! 
-       * @brief Add method for adding music publishers.
-       */
-    internal class MusicPublisherService:ImusicPublisherService
+   
+    public class MusicPublisherService: ImusicPublisherService
     {
 
         private ADatabaseConnection _databaseConnection;
@@ -38,4 +36,4 @@ namespace music_store.Services
     }
 
 }
-}
+
