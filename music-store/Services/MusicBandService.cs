@@ -10,19 +10,14 @@ namespace music_store.Services
 	 */
 	public class MusicBandService
 	{
-		/*!
-		 * @brief Method to add a music band.
-		 * @param[in] musicBand - The music band object.
-		 * @return True - if the addition was successful; False - otherwise .
-		 */
 		private readonly ADatabaseConnection _db;
 
-        public MusicBandService(ADatabaseConnection db)
-        {
-            _db = db;
-        }
+		public MusicBandService(ADatabaseConnection db)
+		{
+			_db = db;
+		}
 
-        public bool AddMusicBand(MusicBand musicBand)
+		public bool AddMusicBand(MusicBand musicBand)
 		{
 			try
 			{
