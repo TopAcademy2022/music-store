@@ -1,11 +1,17 @@
 ﻿using System;
-using System.IO;
+using music_store.Services;
+using music_store.Services.Interfaces;
 
 namespace music_store.Models.Entities
 {
 	public class VinylRecord
 	{
-		private static readonly string LogFilePath = "Logs/changes.log";
+		private readonly VinylRecordLogger? _logger;
+
+		public VinylRecord(VinylRecordLogger? logger = null)
+		{
+			_logger = logger;
+		}
 
 		public int Id { get; set; }
 
@@ -17,7 +23,7 @@ namespace music_store.Models.Entities
 			{
 				if (_name != value)
 				{
-					LogChange(nameof(Name), _name, value);
+					_logger?.LogChange(nameof(Name), _name, value);
 					_name = value;
 				}
 			}
@@ -31,7 +37,10 @@ namespace music_store.Models.Entities
 			{
 				if (_musicBand != value)
 				{
-					LogChange(nameof(MusicBand), _musicBand?.ToString() ?? "null", value?.ToString() ?? "null");
+					string oldValue = _musicBand?.Name ?? "null";
+					string newValue = value?.Name ?? "null";
+
+					_logger?.LogChange(nameof(MusicBand), oldValue, newValue);
 					_musicBand = value;
 				}
 			}
@@ -45,7 +54,10 @@ namespace music_store.Models.Entities
 			{
 				if (_musicPublisher != value)
 				{
-					LogChange(nameof(MusicPublisher), _musicPublisher?.ToString() ?? "null", value?.ToString() ?? "null");
+					string oldValue = _musicPublisher?.Name ?? "null";
+					string newValue = value?.Name ?? "null";
+
+					_logger?.LogChange(nameof(MusicPublisher), oldValue, newValue);
 					_musicPublisher = value;
 				}
 			}
@@ -59,7 +71,7 @@ namespace music_store.Models.Entities
 			{
 				if (_trackCount != value)
 				{
-					LogChange(nameof(TrackCount), _trackCount.ToString(), value.ToString());
+					_logger?.LogChange(nameof(TrackCount), _trackCount.ToString(), value.ToString());
 					_trackCount = value;
 				}
 			}
@@ -73,7 +85,10 @@ namespace music_store.Models.Entities
 			{
 				if (_musicGenre != value)
 				{
-					LogChange(nameof(MusicGenre), _musicGenre?.ToString() ?? "null", value?.ToString() ?? "null");
+					string oldValue = _musicGenre?.Name ?? "null";
+					string newValue = value?.Name ?? "null";
+
+					_logger?.LogChange(nameof(MusicGenre), oldValue, newValue);
 					_musicGenre = value;
 				}
 			}
@@ -87,7 +102,7 @@ namespace music_store.Models.Entities
 			{
 				if (_publicationYear != value)
 				{
-					LogChange(nameof(PublicationYear), _publicationYear.ToString("yyyy"), value.ToString("yyyy"));
+					_logger?.LogChange(nameof(PublicationYear), _publicationYear.ToString("yyyy"), value.ToString("yyyy"));
 					_publicationYear = value;
 				}
 			}
@@ -101,7 +116,7 @@ namespace music_store.Models.Entities
 			{
 				if (_costPrice != value)
 				{
-					LogChange(nameof(CostPrice), _costPrice.ToString(), value.ToString());
+					_logger?.LogChange(nameof(CostPrice), _costPrice.ToString(), value.ToString());
 					_costPrice = value;
 				}
 			}
@@ -115,24 +130,10 @@ namespace music_store.Models.Entities
 			{
 				if (_sellingPrice != value)
 				{
-					LogChange(nameof(SellingPrice), _sellingPrice.ToString(), value.ToString());
+					_logger?.LogChange(nameof(SellingPrice), _sellingPrice.ToString(), value.ToString());
 					_sellingPrice = value;
 				}
 			}
 		}
-
-		/*!
-		 *	@brief Saves the changes to file
-		 *	param[in] propertyName - Name of the column
-		 *	param[in] oldValue - old value of column
-		 *	param[in] newValue - new value of column
-		 */
-		private static void LogChange(string propertyName, string oldValue, string newValue)
-		{
-			Directory.CreateDirectory(Path.GetDirectoryName(LogFilePath) ?? string.Empty);
-
-			var logEntry = $"{DateTime.Now} Property '{propertyName}' changed from '{oldValue}' to '{newValue}'{Environment.NewLine}";
-			File.AppendAllText(LogFilePath, logEntry);
-		}  
 	}
 }
