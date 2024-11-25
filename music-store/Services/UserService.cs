@@ -1,5 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using music_store.Models.Domains;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
 
@@ -9,9 +12,11 @@ namespace music_store.Services
 	{
 		private ADatabaseConnection _databaseConnection;
 
+		IFactoryMapper<DUser, User> factoryMapper;
 		public UserService(ADatabaseConnection aDatabaseConnection)
 		{
 			this._databaseConnection = aDatabaseConnection;
+			factoryMapper = new FactoryMapper<DUser, User>();
 		}
 
 		public bool AddUser(User user)
@@ -40,7 +45,7 @@ namespace music_store.Services
 		{
 			try
 			{
-				return this._databaseConnection.Users.Where(usr => 
+				return this._databaseConnection.Users.Where(usr =>
 				usr.Login == user.Login &&
 				usr.Password == user.Password).FirstOrDefault();
 			}
@@ -61,6 +66,36 @@ namespace music_store.Services
 				if (findedUser != null)
 				{
 					this._databaseConnection.Users.Remove(findedUser);
+					this._databaseConnection.SaveChanges();
+
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return false;
+		}
+
+		/*! 
+		* @brief Buying a record, charging money from the user's balance.
+		* @param[in] vinylRecord - purchasable record.
+		* @param[in] user - record buyer.
+		* @return True - record purchased; False - record not purchased.
+		*/
+		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
+		{
+			DUser dUser = factoryMapper.AddDomain(user); //!< Data entry into the domain model.
+
+			try
+			{
+				if (dUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
+				{
+					dUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
+
+					this._databaseConnection.PurchaseHistories.Add(new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DateTime = DateTime.Now });
 					this._databaseConnection.SaveChanges();
 
 					return true;

@@ -19,6 +19,10 @@ namespace music_store.Services.Interfaces
 
 		public DbSet<User> Users => Set<User>();
 
+		public DbSet<Balance> Balances => Set<Balance>();
+
+		public DbSet<PurchaseHistory> PurchaseHistories => Set<PurchaseHistory>();
+
 		public ADatabaseConnection()
 		{
 			this.ConnectionString = this.ReturnConnectionString();
