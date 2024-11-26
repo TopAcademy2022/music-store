@@ -21,5 +21,7 @@ namespace music_store.Models.Entities
 		public uint CostPrice { get; set; }
 
 		public uint SellingPrice { get; set; }
+
+		public DateTime DateOfReceiptOfTheRecords { get; set; }
 	}
 }

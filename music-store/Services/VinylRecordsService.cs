@@ -2,6 +2,7 @@
 using System.Linq;
 using music_store.Services.Interfaces;
 using music_store.Models.Entities;
+using System.Collections.Generic;
 
 namespace music_store.Services
 {
@@ -42,6 +43,14 @@ namespace music_store.Services
 			return _dbConnection.VinylRecords
 					   .Where(vr => vr.Name == vinylRecordName)
 					   .FirstOrDefault();
+		}
+
+		public List<VinylRecord> GetNewVinylRecords()
+		{
+			DateTime oneMonthAgo = DateTime.Now.AddMonths(-1);
+			return _dbConnection.VinylRecords
+					   .Where(vr => vr.DateOfReceiptOfTheRecords >= oneMonthAgo)
+					   .ToList();
 		}
 	}
 }
