@@ -1,4 +1,5 @@
-﻿using music_store.Models.Entities;
+﻿using System.Collections.Generic;
+using music_store.Models.Entities;
 
 namespace music_store.Services.Interfaces
 {
@@ -11,13 +12,17 @@ namespace music_store.Services.Interfaces
 		*/
 		public bool AddVinilRecord(VinylRecord vinylRecord);
 
-
-	   /*! @fn VinylRecord? SearchByName(string vinylRecordName)
-	   *  @brief Searches for a vinyl record by its name.
-	   *  @param[in] vinylRecordName The name of the vinyl record to search for.
-	   *  @return The first matching vinyl record found, or null if no match is found.
-	   */
+		/*! 
+		*  @brief Searches for a vinyl record by its name.
+		*  @param[in] vinylRecordName - The name of the vinyl record to search for.
+		*  @return The first matching vinyl record found, or null if no match is found.
+		*/
 		public VinylRecord? SearchByName(string searchTerm);
 
+		/*! 
+		* @brief Retrieves a list of newly added vinyl records from the last month.
+		* @return A list of vinyl records that were added to the database within the last month.
+		*/
+		public List<VinylRecord> GetNewVinylRecords();
 	}
 }
