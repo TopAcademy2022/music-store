@@ -5,15 +5,15 @@ using music_store.Models.Entities;
 
 namespace music_store.Services
 {
-    /*! \class VinylRecordsService
-     *  \brief Service for managing vinyl records in the music store.
-     */
-    public class VinylRecordsService : IVinylRecordsService
+	/*! @class VinylRecordsService
+	 *  @brief Service for managing vinyl records in the music store.
+	 */
+	public class VinylRecordsService : IVinylRecordsService
 	{
-        /*! \var _dbConnection
-         *  \brief Database connection used by the service.
-         */
-        private ADatabaseConnection _dbConnection; //!< Database connection
+		/*! @var _dbConnection
+		 *  @brief Database connection used by the service.
+		 */
+		private ADatabaseConnection _dbConnection; //!< Database connection
 
 		public VinylRecordsService(ADatabaseConnection dbConnection)
 		{
@@ -37,7 +37,7 @@ namespace music_store.Services
 			return false;
 		}
 
-        public VinylRecord? SearchByName(string vinylRecordName)
+		public VinylRecord? SearchByName(string vinylRecordName)
 		{
 			return _dbConnection.VinylRecords
 					   .Where(vr => vr.Name == vinylRecordName)
