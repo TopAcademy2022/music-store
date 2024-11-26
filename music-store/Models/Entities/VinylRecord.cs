@@ -1,14 +1,13 @@
 ﻿using System;
 using music_store.Services;
-using music_store.Services.Interfaces;
 
 namespace music_store.Models.Entities
 {
 	public class VinylRecord
 	{
-		private readonly VinylRecordLogger? _logger;
+		private readonly Logger? _logger;
 
-		public VinylRecord(VinylRecordLogger? logger = null)
+		public VinylRecord(Logger? logger = null)
 		{
 			_logger = logger;
 		}
