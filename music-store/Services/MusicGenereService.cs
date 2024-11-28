@@ -10,15 +10,15 @@ namespace music_store.Services
 
         public MusicGenereService(ADatabaseConnection databaseConnection)
         {
-            this._DatabaseConnection = databaseConnection;
+            this._databaseConnection = databaseConnection;
         }
         
         public bool AddMusicGenre(MusicGenre genere)
         {
             try
             {
-                this._DatabaseConnection.MusicGenres.Add(genere);
-                this._DatabaseConnection.SaveChanges();
+                this._databaseConnection.MusicGenres.Add(genere);
+                this._databaseConnection.SaveChanges();
 
                 return true;
             }
