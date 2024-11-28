@@ -14,5 +14,9 @@ namespace music_store.Services.Interfaces
 		 * @return True - if the addition was successful; False - otherwise .
 		 */
 		public bool AddMusicBand(MusicBand musicBand);
+
+        public MusicBand? FindMusicBand(MusicBand musicBand);
+
+        public bool DeleteMusicBand(MusicBand musicBand);
 	}
 }
