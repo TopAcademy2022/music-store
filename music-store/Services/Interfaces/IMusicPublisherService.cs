@@ -16,4 +16,3 @@ namespace music_store.Services.Interfaces
         public bool AddMusicPublisher(MusicPublisher musicPublisher);
     }
 }
-ы
