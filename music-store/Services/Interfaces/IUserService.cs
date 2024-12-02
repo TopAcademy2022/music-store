@@ -17,13 +17,13 @@ namespace music_store.Services.Interfaces
 		 * @return The final hashed password as a hexadecimal string.
 		 */
 		public string HashString(string password);
-
+        /*! 
 		* @brief Buying a record, charging money from the user's balance.
 		* @param[in] vinylRecord - purchasable record.
 		* @param[in] user - record buyer.
 		* @return True - record purchased; False - record not purchased.
 		*/
-		public bool BuyVinylRecord(User user, VinylRecord vinylRecord);
+        public bool BuyVinylRecord(User user, VinylRecord vinylRecord);
 
 		/*! 
 		* @brief Checking the presence of a user in the database.
