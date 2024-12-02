@@ -78,12 +78,6 @@ namespace music_store.Services
 			return false;
 		}
 
-		/*! 
-		* @brief Buying a record, charging money from the user's balance.
-		* @param[in] vinylRecord - purchasable record.
-		* @param[in] user - record buyer.
-		* @return True - record purchased; False - record not purchased.
-		*/
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
 			DTOUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
@@ -112,16 +106,11 @@ namespace music_store.Services
 			return false;
 		}
 
-		/*! 
-		* @brief Checking the presence of a user in the database.
-		* @param[in] user - whose data is being verified.
-		* @return True - user login matches; False - user login not matches.
-		*/
-		public bool IdentificationUser(User user)
+		public bool IdentificationUser(DTOUser domainUser)
 		{
 			try
 			{
-				this._databaseConnection.Users.Any(log => log.Login == user.Login); //!< Checking the presence of elements. 
+				this._databaseConnection.Users.Any(log => log.Login == domainUser.Login); //!< Checking the presence of elements. 
 
 				return true;
 			}
