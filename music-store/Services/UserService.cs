@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using Org.BouncyCastle.Crypto.Digests;
+using music_store.Models.Domains;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
 
@@ -12,11 +13,14 @@ namespace music_store.Services
 		private ADatabaseConnection _databaseConnection;
 
 		private const string _salt = "34KFEB4466JVVNN443JJ25J66564J4N685NN";
+    
+    	private IFactoryMapper _factoryMapper;
 
-		public UserService(ADatabaseConnection aDatabaseConnection)
-		{
-			this._databaseConnection = aDatabaseConnection;
-		}
+		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
+     {
+      this._databaseConnection = aDatabaseConnection;
+			this._factoryMapper = factoryMapper;
+      }
 
 		public bool AddUser(User user)
 		{
@@ -102,6 +106,40 @@ namespace music_store.Services
 				finalHashString.AppendFormat("{0:x2}", b);
 			}
 			return finalHashString.ToString();
+    }
+    
+		/*! 
+		* @brief Buying a record, charging money from the user's balance.
+		* @param[in] vinylRecord - purchasable record.
+		* @param[in] user - record buyer.
+		* @return True - record purchased; False - record not purchased.
+		*/
+		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
+		{
+			DTOUser DomainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
+
+			try
+			{
+				if (DomainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
+				{
+					DomainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
+
+					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
+
+					PurchasedRecords records = this._factoryMapper.GetMapperConfig().CreateMapper().Map<PurchasedRecords>(history);  //!< Data entry into the domain model.
+
+					this._databaseConnection.PurchaseHistories.Add(history);
+					this._databaseConnection.SaveChanges();
+
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return false;
 		}
 	}
 }

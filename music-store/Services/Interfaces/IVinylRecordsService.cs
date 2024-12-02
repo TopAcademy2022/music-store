@@ -24,5 +24,12 @@ namespace music_store.Services.Interfaces
 		* @return A list of vinyl records that were added to the database within the last month.
 		*/
 		public List<VinylRecord> GetNewVinylRecords();
-	}
+
+        /*! 
+		* @brief Deleting plates to our database.
+		* @param[in] vinylRecord - class instance to delete.
+		* @return True - vinyl record deleted; False - vinyl record not deleted.
+		*/
+        public bool DeleteVinilRecord(VinylRecord vinylRecord);
+    }
 }
