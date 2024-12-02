@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using music_store.Services.Interfaces;
 using music_store.Models.Entities;
+
 
 namespace music_store.Services
 {
@@ -28,6 +30,21 @@ namespace music_store.Services
 			}
 
 			return false;
+		}
+
+		public VinylRecord? FindVinylRecordByAuthorName(string authorName)
+		{
+			try
+			{
+				return this._dbConnection.VinylRecords.FirstOrDefault(vin => 
+				vin.MusicBand.Name.ToLower() == authorName.ToLower());
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return null;
 		}
 	}
 }
