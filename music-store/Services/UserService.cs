@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using music_store.Models.Domains;
 using music_store.Models.Entities;
@@ -108,9 +109,16 @@ namespace music_store.Services
 
 		public bool IdentificationUser(DTOUser domainUser)
 		{
+			List<DTOUser> domainUsers = new List<DTOUser>();
+
+			foreach (var user in this._databaseConnection.Users)
+			{
+				domainUsers.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user));  //!< Data entry into the domain model.
+			}
+
 			try
 			{
-				this._databaseConnection.Users.Any(log => log.Login == domainUser.Login); //!< Checking the presence of elements. 
+				domainUsers.Any(log => log.Login == domainUser.Login); //!< Checking the presence of elements. 
 
 				return true;
 			}
