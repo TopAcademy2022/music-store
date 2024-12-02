@@ -11,6 +11,7 @@ namespace music_store.Services
 		private ADatabaseConnection _databaseConnection;
 
 		private IFactoryMapper _factoryMapper;
+
 		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
 		{
 			this._databaseConnection = aDatabaseConnection;
@@ -85,13 +86,13 @@ namespace music_store.Services
 		*/
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
-			DTOUser DomainsUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
+			DTOUser DomainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
 
 			try
 			{
-				if (DomainsUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
+				if (DomainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					DomainsUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
+					DomainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
 
 					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
 
