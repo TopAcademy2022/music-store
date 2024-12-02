@@ -32,11 +32,11 @@ namespace music_store.Services
 			return false;
 		}
 
-		public VinylRecord? FindVinylRecordByAuthorName(string authorName)
+		public IEnumerable<VinylRecord>? FindVinylRecordByAuthorName(string authorName)
 		{
 			try
 			{
-				return this._dbConnection.VinylRecords.FirstOrDefault(vin => 
+				return this._dbConnection.VinylRecords.Where(vin => 
 				vin.MusicBand.Name.ToLower() == authorName.ToLower());
 			}
 			catch (Exception exception)
