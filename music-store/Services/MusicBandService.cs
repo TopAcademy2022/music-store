@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
 
@@ -10,19 +11,19 @@ namespace music_store.Services
 	 */
 	public class MusicBandService
 	{
-		private readonly ADatabaseConnection _db;
+		private readonly ADatabaseConnection _databaseConnection;
 
-		public MusicBandService(ADatabaseConnection db)
+		public MusicBandService(ADatabaseConnection databaseConnection)
 		{
-			_db = db;
+            _databaseConnection = databaseConnection;
 		}
 
 		public bool AddMusicBand(MusicBand musicBand)
 		{
 			try
 			{
-				_db.MusicBands.Add(musicBand);
-				_db.SaveChanges();
+                _databaseConnection.MusicBands.Add(musicBand);
+                _databaseConnection.SaveChanges();
 
 				return true;
 			}
@@ -33,5 +34,43 @@ namespace music_store.Services
 
 			return false;
 		}
-	}
+
+        public MusicBand? FindMusicBand(MusicBand musicBand)
+        {
+            try
+            {
+                return this._databaseConnection.MusicBands.Where(mband =>
+                mband.Name == musicBand.Name).FirstOrDefault();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+
+            return null;
+        }
+
+        public bool DeleteMusicBand(MusicBand musicBand)
+        {
+            try
+            {
+                MusicBand? findedMusicBand = this.FindMusicBand(musicBand);
+
+                if (findedMusicBand != null)
+                {
+                    this._databaseConnection.MusicBands.Remove(findedMusicBand);
+                    this._databaseConnection.SaveChanges();
+
+
+                    return true;
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+
+            return false;
+        }
+    }
 }
