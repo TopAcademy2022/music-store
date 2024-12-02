@@ -86,13 +86,13 @@ namespace music_store.Services
 		*/
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
-			DTOUser DomainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
+			DTOUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
 
 			try
 			{
-				if (DomainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
+				if (domainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					DomainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
+					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
 
 					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
 
@@ -103,6 +103,27 @@ namespace music_store.Services
 
 					return true;
 				}
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return false;
+		}
+
+		/*! 
+		* @brief Checking the presence of a user in the database.
+		* @param[in] user - whose data is being verified.
+		* @return True - user login matches; False - user login not matches.
+		*/
+		public bool IdentificationUser(User user)
+		{
+			try
+			{
+				this._databaseConnection.Users.Any(log => log.Login == user.Login); //!< Checking the presence of elements. 
+
+				return true;
 			}
 			catch (Exception exception)
 			{
