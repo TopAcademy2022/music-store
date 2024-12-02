@@ -118,9 +118,7 @@ namespace music_store.Services
 
 			try
 			{
-				domainUsers.Any(log => log.Login == domainUser.Login); //!< Checking the presence of elements. 
-
-				return true;
+				return domainUsers.Any(log => log.Login == domainUser.Login); //!< Checking the presence of elements. 
 			}
 			catch (Exception exception)
 			{
