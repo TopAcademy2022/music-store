@@ -52,5 +52,22 @@ namespace music_store.Services
 					   .Where(vr => vr.DateOfReceiptOfTheRecords >= oneMonthAgo)
 					   .ToList();
 		}
-	}
+
+        public bool DeleteVinilRecord(VinylRecord vinylRecord)
+        {
+            try
+            {
+                this._dbConnection.VinylRecords.Remove(vinylRecord);
+                this._dbConnection.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
+    }
 }
