@@ -15,6 +15,6 @@ namespace music_store.Services.Interfaces
 		* @param[in] authorName - string to find in database.
 		* @return VinylRecord - author`s name found; Null - author`s name not found.
 		*/
-		public VinylRecord? FindVinylRecordByAuthorName(string authorName);
+		public IEnumerable<VinylRecord>? FindVinylRecordByAuthorName(string authorName);
 	}
 }
