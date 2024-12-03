@@ -4,7 +4,6 @@ using music_store.Services.Interfaces;
 using music_store.Models.Entities;
 using System.Collections.Generic;
 
-
 namespace music_store.Services
 {
 	/*! @class VinylRecordsService
@@ -87,4 +86,3 @@ namespace music_store.Services
         }
     }
 }
-
