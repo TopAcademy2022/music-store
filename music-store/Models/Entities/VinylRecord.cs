@@ -1,20 +1,16 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using music_store.Services;
 
 namespace music_store.Models.Entities
 {
-	public class VinylRecord
+    public class VinylRecord : BaseModel
 	{
-		private readonly Logger? _logger;
-
-		public VinylRecord(Logger? logger = null)
-		{
-			_logger = logger;
-		}
+		public VinylRecord(ILogger logger) : base(logger) { }
 
 		public int Id { get; set; }
 
-		private string _name = null!;
+        private string _name = null!;
 		public string Name
 		{
 			get => _name;
@@ -28,7 +24,7 @@ namespace music_store.Models.Entities
 			}
 		}
 
-		private MusicBand _musicBand = null!;
+        private MusicBand _musicBand = null!;
 		public MusicBand MusicBand
 		{
 			get => _musicBand;

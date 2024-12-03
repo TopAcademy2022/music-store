@@ -1,8 +1,12 @@
-﻿namespace music_store.Models.Entities
+﻿using Microsoft.Extensions.Logging;
+
+namespace music_store.Models.Entities
 {
-	public class MusicGenre
+	public class MusicGenre : BaseModel
 	{
-		public int Id { get; set; }
+        public MusicGenre(ILogger? logger) : base(logger) {}
+
+        public int Id { get; set; }
 
 		public string Name { get; set; } = null!;
 	}
