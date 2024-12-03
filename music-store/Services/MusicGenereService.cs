@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
 
@@ -29,5 +30,21 @@ namespace music_store.Services
                 return false;
             }
         }
+
+        public MusicGenre? FindMusicGenere(MusicGenre musicGenre)
+        {
+            try
+            {
+                return this._databaseConnection.MusicGenres.Where(mGenre =>
+                mGenre.Name == musicGenre.Name).FirstOrDefault();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+            }
+
+            return null;
+        }
+
     }
 }

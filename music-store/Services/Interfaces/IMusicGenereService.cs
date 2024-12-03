@@ -11,5 +11,6 @@ namespace music_store.Services.Interfaces
         * @return True - music genere added; False - music genere not added.
         */
         public bool AddMusicGenre(MusicGenre genere);
+        public MusicGenre? FindMusicGenere(MusicGenre musicGenre);
     }
 }
