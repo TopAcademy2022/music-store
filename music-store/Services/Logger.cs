@@ -1,54 +1,49 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using Serilog;
-using System;
 
 namespace music_store.Services
 {
-	public class Logger : Microsoft.Extensions.Logging.ILogger
+	public class Logger
 	{
-		private readonly Serilog.ILogger _logger;
+		private readonly ILogger _logger;
 
 		public Logger()
 		{
-			// Initialize logger
-			Serilog.Log.Logger = new LoggerConfiguration()
-				.WriteTo.File($"Logs/changes.log", rollingInterval: RollingInterval.Day)
+			string directoryLog = Path.Combine(Directory.GetCurrentDirectory(), "Logs");
+
+			if (!Directory.Exists(directoryLog))
+			{
+				Directory.CreateDirectory(directoryLog);
+			}
+
+			// Initialize serilog
+			Log.Logger = new LoggerConfiguration()
+				.WriteTo.File(Path.Combine(directoryLog, "changes.log"), rollingInterval: RollingInterval.Day)
 				.CreateLogger();
 
-			_logger = Serilog.Log.Logger;
+			_logger = Log.Logger;
 		}
 
-		//public static void Log(this Microsoft.Extensions.Logging.ILogger logger, LogLevel logLevel, string? message, params object?[] args)
-		//{
-		//	LogChange(logLevel.ToString(), message);
-		//}
-		
-		/*!
-		 * @brief Writes the changes into files
-		 * @param[in] propertyName - Name of Property that was changed
-		 * @param[in] oldValue - Value before the change
-		 * @param[in] newValue - Value after the change
-		 */
-		public void LogChange(string propertyName, string oldValue, string newValue)
+		public void LogChanges<T>(T original, T changed)
 		{
-			string logMessage = $"Property '{propertyName}' changed from '{oldValue ?? "null"}' to '{newValue ?? "null"}'";
+			Type type = typeof(T);
 
-			_logger.Information(logMessage);
-		}
+			foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))
+			{
+				if (property.CanWrite)
+				{
+					object? originalValue = property.GetValue(original);
+					object? changedValue = property.GetValue(changed);
 
-		public IDisposable BeginScope<TState>(TState state)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool IsEnabled(LogLevel logLevel)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-		{
-			throw new NotImplementedException();
+					if (!Equals(originalValue, changedValue))
+					{
+						_logger.Information("Property '{Property}' changed from '{Original}' to '{Updated}'",
+							property.Name, originalValue, changedValue);
+					}
+				}
+			}
 		}
 	}
 }
