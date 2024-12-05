@@ -23,5 +23,9 @@ namespace music_store.Models.Entities
 		public uint SellingPrice { get; set; }
 
 		public DateTime DateOfReceiptOfTheRecords { get; set; }
+
+		public bool IsWorn {  get; set; } = false;
+
+		public double WearDegree { get; set; }
 	}
 }

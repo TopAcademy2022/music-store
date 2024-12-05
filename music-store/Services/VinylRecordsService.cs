@@ -3,6 +3,7 @@ using System.Linq;
 using music_store.Services.Interfaces;
 using music_store.Models.Entities;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace music_store.Services
 {
@@ -84,5 +85,32 @@ namespace music_store.Services
 
             return false;
         }
-    }
+		public bool AddWornVinylRecord(VinylRecord record)
+		{
+			try
+			{
+			if (record.WearDegree >= 0.7)
+				{
+					WornRecord wornRecord = new WornRecord
+					{
+						VinylRecord = record,
+						DateOfRetirement = DateTime.Now
+					};
+
+					this._dbConnection.WornRecords.Add(wornRecord);
+					record.IsWorn = true;
+					_dbConnection.VinylRecords.Update(record);
+					_dbConnection.SaveChanges();
+
+					return true;
+				}
+			}
+			catch(Exception ex) 
+			{
+				Console.WriteLine(ex.Message);
+			}
+
+			return false;
+		}
+	}
 }

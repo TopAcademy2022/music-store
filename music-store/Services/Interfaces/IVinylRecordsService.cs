@@ -38,5 +38,12 @@ namespace music_store.Services.Interfaces
 		* @return True - vinyl record deleted; False - vinyl record not deleted.
 		*/
 		public bool DeleteVinilRecord(VinylRecord vinylRecord);
+
+		/*! 
+		* @brief Add Worn Vinyl Records to WornRecords in our database.
+		* @param[in] vinylRecord - class instance to add.
+		* @return True - vinyl record added; False - vinyl record not added.
+		*/
+		public bool AddWornVinylRecord(VinylRecord record);
 	}
 }
