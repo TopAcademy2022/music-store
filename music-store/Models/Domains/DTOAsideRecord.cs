@@ -1,8 +1,9 @@
-﻿namespace music_store.Models.Entities
+﻿using music_store.Models.Entities;
+
+namespace music_store.Models.Domains
 {
-	public class BasketForRecords
+	public class DTOAsideRecord
 	{
-		public int Id { get; set; }
 		public VinylRecord VinylRecord { get; set; } = null!;
 
 		public User User { get; set; } = null!;

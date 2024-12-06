@@ -20,10 +20,12 @@ namespace music_store.Services
 			CreateMap<User, DTOUser>().ForMember(dest => dest.Login, act => act.MapFrom(src => src.Login));
 			CreateMap<PurchaseHistory, PurchasedRecords>().ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
 					.ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
-
-			CreateMap<BasketForRecords, DTOBasketForRecords>()
-				.ForMember(dest => dest.VinylRecordId, act => act.MapFrom(src => src.VinylRecord.Id))
-				.ForMember(dest => dest.UserId, act => act.MapFrom(src => src.User.Id));
+			CreateMap<AsideRecord, DTOAsideRecord>()
+				.ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
+				.ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
+			CreateMap<DTOAsideRecord, AsideRecord>()
+			  .ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
+			  .ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
 		}
 
 		/*! 

@@ -23,7 +23,7 @@ namespace music_store.Services.Interfaces
 
 		public DbSet<PurchaseHistory> PurchaseHistories => Set<PurchaseHistory>();
 
-		public DbSet<BasketForRecords> BasketForRecords => Set<BasketForRecords>();
+		public DbSet<AsideRecord> AsideRecord => Set<AsideRecord>();
 
 		public ADatabaseConnection()
 		{
