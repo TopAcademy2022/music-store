@@ -31,5 +31,7 @@ namespace music_store.Services.Interfaces
 		* @return True - user login matches; False - user login not matches.
 		*/
 		public bool IdentificationUser(DTOUser domainUser);
+
+		public bool Registration(string login, string password);
 	}
 }

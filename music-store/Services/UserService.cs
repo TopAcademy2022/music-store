@@ -164,5 +164,28 @@ namespace music_store.Services
 
 			return false;
 		}
-	}
+
+        public bool Registration(string login, string password)
+		{
+			if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(password))
+			{
+                User user = new User()
+                {
+                    Login = login,
+                    Password = this.HashString(password)
+                };
+
+                try
+                {
+                    return this.AddUser(user);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.ToString());
+                }
+            }
+
+			return false;
+		}
+    }
 }
