@@ -33,5 +33,12 @@ namespace music_store.Services.Interfaces
 		public bool IdentificationUser(DTOUser domainUser);
 
 		public bool Registration(string login, string password);
-	}
+
+        /*! 
+		* @brief Сhecking the password against the password in our database.
+		* @param[in] user - whose password is being authentificate.
+		* @return True - user password matches; False - user password not matches.
+		*/
+        public bool Authentication(User User);
+    }
 }

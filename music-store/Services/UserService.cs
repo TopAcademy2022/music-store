@@ -6,6 +6,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using music_store.Models.Domains;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
+using Org.BouncyCastle.Bcpg;
 
 namespace music_store.Services
 {
@@ -187,5 +188,24 @@ namespace music_store.Services
 
 			return false;
 		}
-    }
+
+		public bool Authentication(User User)
+		{
+			try 
+			{
+				var foundUser = this._databaseConnection.Users.FirstOrDefault(usrs => usrs.Login == User.Login);
+
+				if (foundUser != null && foundUser.Password == HashString(User.Password))
+				{
+					return true;
+				}
+			}
+			catch(Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return false;
+		}
+	}
 }
