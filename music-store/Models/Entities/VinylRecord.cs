@@ -144,5 +144,11 @@ namespace music_store.Models.Entities
 		{
 			_logger.LogChanges(originalValue, newValue);
 		}
+    
+		public DateTime DateOfReceiptOfTheRecords { get; set; }
+
+		public bool IsWorn {  get; set; } = false;
+
+		public double WearDegree { get; set; }
 	}
 }
