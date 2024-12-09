@@ -11,10 +11,10 @@ namespace music_store.Models.Entities
 
 		public Сategory Category { get; set; }
 
-		public uint discountPrice { get; set; }
+		public uint DiscountPercentage { get; set; }
 
-		public DateTime discountStart { get; set; }
+		public DateTime DiscountStart { get; set; }
 
-		public DateTime discountEnd { get; set; }
+		public DateTime DiscountEnd { get; set; }
 	}
 }

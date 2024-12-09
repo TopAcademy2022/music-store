@@ -15,11 +15,11 @@ namespace music_store.Services
 
 		private IRecordDiscountService<User> _discountService;
 
-		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
+		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper, IRecordDiscountService<User> discountService)
 		{
 			this._databaseConnection = aDatabaseConnection;
 			this._factoryMapper = factoryMapper;
-			_discountService = new RecordDiscountService<User>(_databaseConnection);
+			this._discountService = discountService;
 		}
 
 		public bool AddUser(User user)
@@ -90,13 +90,13 @@ namespace music_store.Services
 			{
 				if (domainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					if (_discountService.CheckDiscountUser(vinylRecord))
+					if (_discountService.CheckDiscountUser(user))
 					{
-						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice - vinylRecord.RecordDiscount.discountPrice; //!< Write - off of funds from the balance.
+						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice % vinylRecord.RecordDiscount.DiscountPercentage; //!< Write - off of funds from the balance.
 					}
-					else if (_discountService.CheckDiscountRecord(user))
+					else if (_discountService.CheckDiscountRecord(vinylRecord))
 					{
-						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice - user.RecordDiscount.discountPrice; //!< Discounted debit from the balance.
+						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice % user.RecordDiscount.DiscountPercentage; //!< Discounted debit from the balance.
 					}
 					else
 					{

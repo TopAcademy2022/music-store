@@ -1,4 +1,5 @@
-﻿using music_store.Models.Entities;
+﻿using music_store.Models.Domains;
+using music_store.Models.Entities;
 using music_store.Models.Enum;
 using music_store.Services.Interfaces;
 using System;
@@ -13,7 +14,7 @@ namespace music_store.Services
 
 		public bool AddDiscount(T objectClass, uint priceDiscount, string name, DateTime TimeStart, DateTime TimeEnd )
 		{
-			Сategory сategory = Сategory.Null;
+			Сategory сategory;
 
 			try
 			{
@@ -27,7 +28,7 @@ namespace music_store.Services
 
 					case "ReleaseTime":
 
-						сategory = Сategory.Genre;
+						сategory = Сategory.ReleaseTime;
 
 						break;
 
@@ -43,17 +44,18 @@ namespace music_store.Services
 
 						break;
 					default:
+                        сategory = Сategory.Null;
 
-						break;
+                        break;
 				}
 
 				RecordDiscount recordDiscount = new RecordDiscount()
 				{
 					Category = сategory,
-					discountPrice = priceDiscount,
+                    DiscountPercentage = priceDiscount,
 					Name = name,
-					discountStart = TimeStart,
-					discountEnd = TimeEnd
+					DiscountStart = TimeStart,
+					DiscountEnd = TimeEnd
 				};
 
 				this._databaseConnection.RecordDiscounts.Add(recordDiscount);
@@ -70,10 +72,9 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool CheckDiscountUser(VinylRecord vinylRecord)
+		public bool CheckDiscountRecord(VinylRecord vinylRecord, ActiveDiscounts activeDiscounts)
 		{
-			if (vinylRecord.RecordDiscount != null && vinylRecord.RecordDiscount.discountStart > DateTime.Now
-							&& vinylRecord.RecordDiscount.discountEnd < DateTime.Now)
+			if ()
 			{
 				return true;
 			}
@@ -81,10 +82,9 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool CheckDiscountRecord(User user)
+		public bool CheckDiscountUser(User user)
 		{
-			if (user.RecordDiscount != null && user.RecordDiscount.discountStart > DateTime.Now
-							&& user.RecordDiscount.discountEnd < DateTime.Now)
+			if ()
 			{
 				return true;
 			}

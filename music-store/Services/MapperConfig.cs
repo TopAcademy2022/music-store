@@ -20,13 +20,17 @@ namespace music_store.Services
 			CreateMap<User, DTOUser>().ForMember(dest => dest.Login, act => act.MapFrom(src => src.Login));
 			CreateMap<PurchaseHistory, PurchasedRecords>().ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
 					.ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
-		}
+            CreateMap<RecordDiscount, ActiveDiscounts>().ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+					.ForMember(dest => dest.DiscountPercentage, act => act.MapFrom(src => src.DiscountPercentage))
+							.ForMember(dest => dest.Category, act => act.MapFrom(src => src.Category));
 
-		/*! 
+        }
+
+        /*! 
 		* @brief Create Configuration Mapper.
 		* @return IMapper - Mapper Configuration.
 		*/
-		public IMapper CreateMapper()
+        public IMapper CreateMapper()
 		{
 			var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperConfig>());
 			return config.CreateMapper();

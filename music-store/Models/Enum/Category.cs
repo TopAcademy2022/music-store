@@ -2,11 +2,11 @@
 {
 	public enum Сategory
 	{
-		User = 1,
+        Null = 0,
+        User = 1,
 		Genre = 2,
 		Author = 3,
 		ReleaseTime = 4,
-		Null = 5
 	}
 }
 

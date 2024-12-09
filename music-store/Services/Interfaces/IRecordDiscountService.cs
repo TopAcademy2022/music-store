@@ -7,9 +7,9 @@ namespace music_store.Services.Interfaces
 	{
 		public bool AddDiscount(T objectClass, uint priceDiscount, string name, DateTime TimeStart, DateTime TimeEnd);
 
-		public bool CheckDiscountRecord(User user);
+		public bool CheckDiscountRecord(VinylRecord vinylRecord);
 
-		public bool CheckDiscountUser(VinylRecord vinylRecord);
+		public bool CheckDiscountUser(User user);
 
 
 	}
