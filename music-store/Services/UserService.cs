@@ -18,10 +18,10 @@ namespace music_store.Services
     	private IFactoryMapper _factoryMapper;
 
 		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
-     {
-      this._databaseConnection = aDatabaseConnection;
+    	{
+      		this._databaseConnection = aDatabaseConnection;
 			this._factoryMapper = factoryMapper;
-      }
+      	}
 
 		public bool AddUser(User user)
 		{
