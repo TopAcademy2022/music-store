@@ -5,12 +5,13 @@ using System.Text;
 using Org.BouncyCastle.Crypto.Digests;
 using music_store.Models.Domains;
 using music_store.Models.Entities;
+using music_store.Models.Enum;
 using music_store.Services.Interfaces;
 using Org.BouncyCastle.Bcpg;
 
 namespace music_store.Services
 {
-	public class UserService : IUserService
+	public class UserService<T> : IUserService<T>
 	{
 		private ADatabaseConnection _databaseConnection;
 
@@ -18,11 +19,14 @@ namespace music_store.Services
     
     	private IFactoryMapper _factoryMapper;
 
-		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
+		private IRecordDiscountService<T> _discountService;
+
+		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper, IRecordDiscountService<T> discountService)
     	{
       		this._databaseConnection = aDatabaseConnection;
 			this._factoryMapper = factoryMapper;
-      	}
+			this._discountService = discountService;
+		}
 
 		public bool AddUser(User user)
 		{
@@ -87,7 +91,6 @@ namespace music_store.Services
 		public string HashString(string password)
 		{
 			var sha3 = new Sha3Digest(512);
-
 			byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
 			sha3.BlockUpdate(passwordBytes, 0, passwordBytes.Length);
@@ -108,7 +111,7 @@ namespace music_store.Services
 				finalHashString.AppendFormat("{0:x2}", b);
 			}
 			return finalHashString.ToString();
-    }
+		}
     
 		/*! 
 		* @brief Buying a record, charging money from the user's balance.
@@ -119,13 +122,13 @@ namespace music_store.Services
     
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
-			DTOUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
+			DomainUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DomainUser>(user);  //!< Data entry into the domain model.
 
 			try
 			{
 				if (domainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Write - off of funds from the balance.
+					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice * (1 - this._discountService.CheckDiscount(Сategory.Vinyl, vinylRecord.Id)); //!< Discounted debit from the balance.
 
 					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
 
@@ -145,13 +148,13 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool IdentificationUser(DTOUser domainUser)
+		public bool IdentificationUser(DomainUser domainUser)
 		{
-			List<DTOUser> domainUsers = new List<DTOUser>();
+			List<DomainUser> domainUsers = new List<DomainUser>();
 
 			foreach (var user in this._databaseConnection.Users)
 			{
-				domainUsers.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user));  //!< Data entry into the domain model.
+				domainUsers.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<DomainUser>(user));  //!< Data entry into the domain model.
 			}
 
 			try
@@ -191,7 +194,7 @@ namespace music_store.Services
 
 		public bool Authentication(User User)
 		{
-			try 
+			try
 			{
 				var foundUser = this._databaseConnection.Users.FirstOrDefault(usrs => usrs.Login == User.Login);
 

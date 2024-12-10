@@ -21,6 +21,8 @@ namespace music_store.Services.Interfaces
 
 		public DbSet<Wallet> Wallets => Set<Wallet>();
 
+		public DbSet<RecordDiscount> RecordDiscounts => Set<RecordDiscount>();
+
 		public DbSet<PurchaseHistory> PurchaseHistories => Set<PurchaseHistory>();
 
 		public DbSet<AsideRecord> AsideRecord => Set<AsideRecord>();

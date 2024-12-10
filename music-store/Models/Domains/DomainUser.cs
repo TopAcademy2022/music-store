@@ -2,7 +2,7 @@
 
 namespace music_store.Models.Domains
 {
-	public class DTOUser
+	public class DomainUser
 	{
 		public string Login { get; set; } = null!;
 
