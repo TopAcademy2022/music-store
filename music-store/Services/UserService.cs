@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -111,7 +111,6 @@ namespace music_store.Services
 				finalHashString.AppendFormat("{0:x2}", b);
 			}
 			return finalHashString.ToString();
-			
 		}
     
 		/*! 
@@ -120,6 +119,7 @@ namespace music_store.Services
 		* @param[in] user - record buyer.
 		* @return True - record purchased; False - record not purchased.
 		*/
+    
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
 			DomainUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DomainUser>(user);  //!< Data entry into the domain model.
@@ -169,25 +169,25 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool Registration(string login, string password)
+        public bool Registration(string login, string password)
 		{
 			if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(password))
 			{
-				User user = new User()
-				{
-					Login = login,
-					Password = this.HashString(password)
-				};
+                User user = new User()
+                {
+                    Login = login,
+                    Password = this.HashString(password)
+                };
 
-				try
-				{
-					return this.AddUser(user);
-				}
-				catch (Exception exception)
-				{
-					Console.WriteLine(exception.ToString());
-				}
-			}
+                try
+                {
+                    return this.AddUser(user);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.ToString());
+                }
+            }
 
 			return false;
 		}
@@ -203,7 +203,7 @@ namespace music_store.Services
 					return true;
 				}
 			}
-			catch (Exception exception)
+			catch(Exception exception)
 			{
 				Console.WriteLine(exception.ToString());
 			}
