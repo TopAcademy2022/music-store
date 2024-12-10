@@ -17,12 +17,14 @@ namespace music_store.Services
 		*/
 		public MapperConfig()
 		{
-			CreateMap<User, DTOUser>().ForMember(dest => dest.Login, act => act.MapFrom(src => src.Login));
+			CreateMap<User, DomainUser>().ForMember(dest => dest.Login, act => act.MapFrom(src => src.Login));
 			CreateMap<PurchaseHistory, PurchasedRecords>().ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
 					.ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
             CreateMap<RecordDiscount, ActiveDiscounts>().ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
 					.ForMember(dest => dest.DiscountPercentage, act => act.MapFrom(src => src.DiscountPercentage))
-							.ForMember(dest => dest.Category, act => act.MapFrom(src => src.Category));
+					.ForMember(dest => dest.Category, act => act.MapFrom(src => src.Category))
+					.ForMember(dest => dest.DiscountEnd <= DateTime.Now, act => act.MapFrom(src => src.DiscountEnd))
+					.ForMember(dest => dest.DiscountStart >= DateTime.Now, act => act.MapFrom(src => src.DiscountStart));
 
         }
 

@@ -16,5 +16,7 @@ namespace music_store.Models.Entities
 		public DateTime DiscountStart { get; set; }
 
 		public DateTime DiscountEnd { get; set; }
+
+		public int ObjectDiscount { get; set; }
 	}
 }

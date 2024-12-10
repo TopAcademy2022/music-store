@@ -3,7 +3,7 @@ using music_store.Models.Entities;
 
 namespace music_store.Services.Interfaces
 {
-	public interface IUserService
+	public interface IUserService<T>
 	{
 		public bool AddUser(User user);
 
@@ -24,6 +24,6 @@ namespace music_store.Services.Interfaces
 		* @param[in] user - whose data is being verified.
 		* @return True - user login matches; False - user login not matches.
 		*/
-		public bool IdentificationUser(DTOUser domainUser);
+		public bool IdentificationUser(DomainUser domainUser);
 	}
 }

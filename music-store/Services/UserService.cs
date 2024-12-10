@@ -7,15 +7,15 @@ using music_store.Services.Interfaces;
 
 namespace music_store.Services
 {
-	public class UserService : IUserService
+	public class UserService<T> : IUserService<T>
 	{
 		private ADatabaseConnection _databaseConnection;
 
 		private IFactoryMapper _factoryMapper;
 
-		private IRecordDiscountService<User> _discountService;
+		private IRecordDiscountService<T> _discountService;
 
-		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper, IRecordDiscountService<User> discountService)
+		public UserService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper, IRecordDiscountService<T> discountService)
 		{
 			this._databaseConnection = aDatabaseConnection;
 			this._factoryMapper = factoryMapper;
@@ -84,25 +84,14 @@ namespace music_store.Services
 
 		public bool BuyVinylRecord(User user, VinylRecord vinylRecord)
 		{
-			DTOUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user);  //!< Data entry into the domain model.
+			DomainUser domainUser = this._factoryMapper.GetMapperConfig().CreateMapper().Map<DomainUser>(user);  //!< Data entry into the domain model.
 
 			try
 			{
 				if (domainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					if (_discountService.CheckDiscountUser(user))
-					{
-						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice % vinylRecord.RecordDiscount.DiscountPercentage; //!< Write - off of funds from the balance.
-					}
-					else if (_discountService.CheckDiscountRecord(vinylRecord))
-					{
-						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice % user.RecordDiscount.DiscountPercentage; //!< Discounted debit from the balance.
-					}
-					else
-					{
-						domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice; //!< Discounted debit from the balance.
-					}
-
+					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice * (1 - _discountService.CheckDiscount()); //!< Discounted debit from the balance.
+					
 					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
 
 					PurchasedRecords records = this._factoryMapper.GetMapperConfig().CreateMapper().Map<PurchasedRecords>(history);  //!< Data entry into the domain model.
@@ -121,13 +110,13 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool IdentificationUser(DTOUser domainUser)
+		public bool IdentificationUser(DomainUser domainUser)
 		{
-			List<DTOUser> domainUsers = new List<DTOUser>();
+			List<DomainUser> domainUsers = new List<DomainUser>();
 
 			foreach (var user in this._databaseConnection.Users)
 			{
-				domainUsers.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<DTOUser>(user));  //!< Data entry into the domain model.
+				domainUsers.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<DomainUser>(user));  //!< Data entry into the domain model.
 			}
 
 			try

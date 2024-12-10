@@ -3,6 +3,8 @@ using music_store.Models.Entities;
 using music_store.Models.Enum;
 using music_store.Services.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace music_store.Services
 {
@@ -10,7 +12,14 @@ namespace music_store.Services
 	{
 		private ADatabaseConnection _databaseConnection;
 
-		public RecordDiscountService(ADatabaseConnection aDatabaseConnection) => this._databaseConnection = aDatabaseConnection;
+		private IFactoryMapper _factoryMapper;
+
+		public RecordDiscountService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
+		{ 
+			this._factoryMapper = factoryMapper;
+
+			this._databaseConnection = aDatabaseConnection;
+		}
 
 		public bool AddDiscount(T objectClass, uint priceDiscount, string name, DateTime TimeStart, DateTime TimeEnd )
 		{
@@ -72,25 +81,23 @@ namespace music_store.Services
 			return false;
 		}
 
-		public bool CheckDiscountRecord(VinylRecord vinylRecord, ActiveDiscounts activeDiscounts)
+		public uint CheckDiscount(Сategory category, int objectId)
 		{
-			if ()
+			List<ActiveDiscounts> activeDiscounts = new List<ActiveDiscounts>();
+
+			foreach (var discounts in this._databaseConnection.RecordDiscounts)
 			{
-				return true;
+				activeDiscounts.Add(this._factoryMapper.GetMapperConfig().CreateMapper().Map<ActiveDiscounts>(discounts));  //!< Data entry into the domain model.
 			}
 
-			return false;
-		}
+			ActiveDiscounts? currentDiscount = activeDiscounts.Where(discount => discount.Category == category && discount.ObjectDiscount == objectId).FirstOrDefault();
 
-		public bool CheckDiscountUser(User user)
-		{
-			if ()
+			if (currentDiscount != null)
 			{
-				return true;
+				return currentDiscount.DiscountPercentage;
 			}
 
-			return false;
+			return 0;
 		}
-
 	}
 }

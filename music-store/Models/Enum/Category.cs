@@ -7,6 +7,7 @@
 		Genre = 2,
 		Author = 3,
 		ReleaseTime = 4,
+		Vinyl = 5
 	}
 }
 
