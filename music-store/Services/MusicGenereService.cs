@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using music_store.Models.Entities;
 using music_store.Services.Interfaces;
 
@@ -29,5 +31,20 @@ namespace music_store.Services
                 return false;
             }
         }
-    }
+
+		public IEnumerable<VinylRecord> FindVinylRecordsByMusicGenere(string musicGenre)
+		{
+			try
+			{
+				return this._databaseConnection.VinylRecords.Where(
+					vinyl => vinyl.MusicGenre.Name == musicGenre);
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return Enumerable.Empty<VinylRecord>();
+		}
+	}
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using music_store.Services.Interfaces;
 using music_store.Models.Entities;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace music_store.Services
 {
@@ -37,6 +38,21 @@ namespace music_store.Services
 
 			return false;
 		}
+    
+		public IEnumerable<VinylRecord>? FindVinylRecordByAuthorName(string authorName)
+		{
+			try
+			{
+				return this._dbConnection.VinylRecords.Where(vin => 
+				vin.MusicBand.Name.ToLower() == authorName.ToLower());
+			}
+			catch (Exception exception)
+			{
+				Console.WriteLine(exception.ToString());
+			}
+
+			return null;
+		}
 
 		public VinylRecord? SearchByName(string vinylRecordName)
 		{
@@ -51,6 +67,50 @@ namespace music_store.Services
 			return _dbConnection.VinylRecords
 					   .Where(vr => vr.DateOfReceiptOfTheRecords >= oneMonthAgo)
 					   .ToList();
+		}
+
+        public bool DeleteVinilRecord(VinylRecord vinylRecord)
+        {
+            try
+            {
+                this._dbConnection.VinylRecords.Remove(vinylRecord);
+                this._dbConnection.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
+		public bool AddWornVinylRecord(VinylRecord record)
+		{
+			try
+			{
+			if (record.WearDegree >= 0.7)
+				{
+					WornRecord wornRecord = new WornRecord
+					{
+						VinylRecord = record,
+						DateOfRetirement = DateTime.Now
+					};
+
+					this._dbConnection.WornRecords.Add(wornRecord);
+					record.IsWorn = true;
+					_dbConnection.VinylRecords.Update(record);
+					_dbConnection.SaveChanges();
+
+					return true;
+				}
+			}
+			catch(Exception ex) 
+			{
+				Console.WriteLine(ex.Message);
+			}
+
+			return false;
 		}
 	}
 }

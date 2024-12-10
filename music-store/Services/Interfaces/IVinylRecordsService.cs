@@ -11,6 +11,13 @@ namespace music_store.Services.Interfaces
 		* @return True - vinyl record added; False - vinyl record not added.
 		*/
 		public bool AddVinilRecord(VinylRecord vinylRecord);
+    
+		/*! 
+		* @brief finding a record by name in our database.
+		* @param[in] authorName - string to find in database.
+		* @return VinylRecord - author`s name found; Null - author`s name not found.
+		*/
+		public IEnumerable<VinylRecord>? FindVinylRecordByAuthorName(string authorName);
 
 		/*! 
 		*  @brief Searches for a vinyl record by its name.
@@ -24,5 +31,19 @@ namespace music_store.Services.Interfaces
 		* @return A list of vinyl records that were added to the database within the last month.
 		*/
 		public List<VinylRecord> GetNewVinylRecords();
+
+		/*! 
+		* @brief Deleting plates to our database.
+		* @param[in] vinylRecord - class instance to delete.
+		* @return True - vinyl record deleted; False - vinyl record not deleted.
+		*/
+		public bool DeleteVinilRecord(VinylRecord vinylRecord);
+
+		/*! 
+		* @brief Add Worn Vinyl Records to WornRecords in our database.
+		* @param[in] vinylRecord - class instance to add.
+		* @return True - vinyl record added; False - vinyl record not added.
+		*/
+		public bool AddWornVinylRecord(VinylRecord record);
 	}
 }

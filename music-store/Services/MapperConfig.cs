@@ -25,14 +25,19 @@ namespace music_store.Services
 					.ForMember(dest => dest.Category, act => act.MapFrom(src => src.Category))
 					.ForMember(dest => dest.DiscountEnd <= DateTime.Now, act => act.MapFrom(src => src.DiscountEnd))
 					.ForMember(dest => dest.DiscountStart >= DateTime.Now, act => act.MapFrom(src => src.DiscountStart));
-
-        }
+			CreateMap<AsideRecord, DTOAsideRecord>()
+				.ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
+				.ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
+			CreateMap<DTOAsideRecord, AsideRecord>()
+			  .ForMember(dest => dest.User, act => act.MapFrom(src => src.User))
+			  .ForMember(dest => dest.VinylRecord, act => act.MapFrom(src => src.VinylRecord));
+		}
 
         /*! 
 		* @brief Create Configuration Mapper.
 		* @return IMapper - Mapper Configuration.
 		*/
-        public IMapper CreateMapper()
+		public IMapper CreateMapper()
 		{
 			var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperConfig>());
 			return config.CreateMapper();
