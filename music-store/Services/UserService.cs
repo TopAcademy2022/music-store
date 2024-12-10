@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using music_store.Models.Domains;
 using music_store.Models.Entities;
+using music_store.Models.Enum;
 using music_store.Services.Interfaces;
 
 namespace music_store.Services
@@ -90,8 +91,8 @@ namespace music_store.Services
 			{
 				if (domainUser.Wallet.BalanceUser >= vinylRecord.CostPrice)
 				{
-					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice * (1 - _discountService.CheckDiscount()); //!< Discounted debit from the balance.
-					
+					domainUser.Wallet.BalanceUser -= vinylRecord.CostPrice * (1 - this._discountService.CheckDiscount(Сategory.Vinyl, vinylRecord.Id)); //!< Discounted debit from the balance.
+
 					PurchaseHistory history = new PurchaseHistory() { User = user, VinylRecord = vinylRecord, DatePurchase = DateTime.Now };
 
 					PurchasedRecords records = this._factoryMapper.GetMapperConfig().CreateMapper().Map<PurchasedRecords>(history);  //!< Data entry into the domain model.

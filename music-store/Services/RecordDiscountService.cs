@@ -15,13 +15,13 @@ namespace music_store.Services
 		private IFactoryMapper _factoryMapper;
 
 		public RecordDiscountService(ADatabaseConnection aDatabaseConnection, IFactoryMapper factoryMapper)
-		{ 
+		{
 			this._factoryMapper = factoryMapper;
 
 			this._databaseConnection = aDatabaseConnection;
 		}
 
-		public bool AddDiscount(T objectClass, uint priceDiscount, string name, DateTime TimeStart, DateTime TimeEnd )
+		public bool AddDiscount(T objectClass, uint priceDiscount, string name, DateTime TimeStart, DateTime TimeEnd)
 		{
 			Сategory сategory;
 
@@ -53,15 +53,15 @@ namespace music_store.Services
 
 						break;
 					default:
-                        сategory = Сategory.Null;
+						сategory = Сategory.Null;
 
-                        break;
+						break;
 				}
 
 				RecordDiscount recordDiscount = new RecordDiscount()
 				{
 					Category = сategory,
-                    DiscountPercentage = priceDiscount,
+					DiscountPercentage = priceDiscount,
 					Name = name,
 					DiscountStart = TimeStart,
 					DiscountEnd = TimeEnd
